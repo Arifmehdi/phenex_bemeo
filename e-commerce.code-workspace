@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../php-package/bulksmsbd-package"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "suruchi"
+	}
+}

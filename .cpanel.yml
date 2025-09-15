@@ -1,0 +1,42 @@
+---
+deployment:
+  tasks:
+    - echo "🚀 Starting Laravel + FilamentPHP Deployment..."
+
+    # - cd public_html
+
+    # Put site into maintenance mode
+    # - /usr/local/bin/php artisan down || true
+
+    # Install Composer dependencies
+    - /opt/cpanel/composer/bin/composer install
+
+    # Permissions
+    # - find storage -type d -exec chmod 775 {} \;
+    # - find bootstrap/cache -type d -exec chmod 775 {} \;
+
+    # Use server-side .env.production
+    # - cp .env.production .env || true
+
+    - /usr/local/bin/php artisan migrate
+
+    # Laravel Optimization
+    - /usr/local/bin/php artisan config:clear
+    - /usr/local/bin/php artisan route:clear
+    - /usr/local/bin/php artisan view:clear
+
+    # - /usr/local/bin/php artisan config:cache
+    # - /usr/local/bin/php artisan route:cache
+    # - /usr/local/bin/php artisan view:cache
+
+    # Filament cache
+    # - /usr/local/bin/php artisan filament:cache
+
+    # Create storage symlink
+    # - /usr/local/bin/php storage:unlink || true
+    # - /usr/local/bin/php artisan storage:link || true
+
+    # Bring site back online
+    # - /usr/local/bin/php artisan up
+
+    - echo "✅ Deployment finished successfully!"

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Interative Panda Login</title>
+    <!--Google Font-->
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu:500" rel="stylesheet">
+    <!--Fontawesome CDN-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!--Tailwind CSS CDN-->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!--Jquery CDN-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+
+<body class="bg-[#14909b] font-['Ubuntu'] text-[#4d4449] flex items-center justify-center min-h-screen">
+    <div id="canvas" class="relative w-[280px] h-[220px]">
+        <!-- Login Form -->
+        <div class="h-[220px] w-[280px] bg-white absolute px-[30px] z-[1] pt-[50px]">
+            <div class="flex items-center mb-4">
+                <i class="fa fa-user text-[20px] mr-2" aria-hidden="true"></i>
+                <input type="text" placeholder="Username"
+                    class="w-[183px] border-0 border-b border-[#4d4449] focus:outline-none bg-transparent placeholder-[#9ca3af]">
+            </div>
+            <div class="flex items-center mb-6">
+                <i class="fa fa-unlock-alt text-[20px] mr-2" aria-hidden="true"></i>
+                <input type="password" placeholder="Password"
+                    class="w-[183px] border-0 border-b border-[#4d4449] focus:outline-none bg-transparent placeholder-[#9ca3af]">
+            </div>
+            <div class="flex justify-center"> <!-- Wrapper for centering the button -->
+                <button type="button"
+                    class="bg-[#14909b] hover:bg-[#208790] text-white text-lg uppercase py-2 px-6 rounded-md shadow-md focus:outline-none transition-colors duration-150">Login</button>
+            </div>
+        </div>
+
+        <!-- Panda Container -->
+        <div class="absolute top-[-160px] left-[26%]"> <!-- Was the main panda background/container -->
+            <div class="relative"> <!-- Panda face, ears etc. -->
+                <div
+                    class="bg-[#4d4449] h-[40px] w-[45px] rounded-t-[43px] transform -rotate-[38deg] relative top-[31px] right-[2px]">
+                </div>
+                <div
+                    class="bg-[#4d4449] h-[40px] w-[45px] rounded-t-[43px] transform rotate-[38deg] relative bottom-[8px] left-[96px]">
+                </div>
+                <div class="h-[120px] w-[135px] bg-white rounded-t-[120px] rounded-b-[90px] relative bottom-[40px]">
+                    <div
+                        class="bg-[#ff9999] h-4 w-[22px] rounded-full relative opacity-80 transform rotate-[25deg] top-[64px] left-[17px]">
+                    </div>
+                    <div
+                        class="bg-[#ff9999] h-4 w-[22px] rounded-full relative opacity-80 transform -rotate-[25deg] top-[46px] left-[95px]">
+                    </div>
+                    <div
+                        class="bg-[#4d4449] h-[35px] w-[32px] rounded-[32px] relative top-[5px] left-[22px] transform -rotate-20">
+                        <div
+                            class="h-[10px] w-[10px] bg-white rounded-full relative transition-all duration-1000 left-[10px] top-[10px] transform rotate-20 eyeball1">
+                        </div>
+                    </div>
+                    <div
+                        class="bg-[#4d4449] h-[35px] w-[32px] rounded-[32px] relative transform rotate-20 bottom-[30.5px] left-[80px]">
+                        <div
+                            class="h-[10px] w-[10px] bg-white rounded-full relative transition-all duration-1000 left-[10px] top-[10px] transform -rotate-20 eyeball2">
+                        </div>
+                    </div>
+                    <div
+                        class="h-[17px] w-[17px] bg-[#4d4449] rounded-tl-[20px] rounded-br-[4px] transform rotate-45 relative bottom-[30px] left-[60px]">
+                        <div
+                            class="bg-[#4d4449] h-[10px] w-[2px] relative transform -rotate-45 left-[18.5px] top-[15px]">
+                        </div>
+                    </div>
+                    <div class="mouth">
+                        <div class="bg-[#4d4449] h-2 w-[15px] rounded-b-[8px] relative bottom-[21px] left-[53px]">
+                            <div class="h-[6px] w-[13px] bg-white rounded-b-[10px] relative left-[1px] bottom-[1px]">
+                            </div>
+                        </div>
+                        <div class="bg-[#4d4449] h-2 w-[15px] rounded-b-[8px] relative bottom-[30px] left-[68.5px]">
+                            <div class="h-[6px] w-[13px] bg-white rounded-b-[10px] relative left-[1px] bottom-[1px]">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Paws -->
+        <div
+            class="bg-[#4d4449] h-[50px] w-[50px] rounded-t-[40px] rounded-b-[20px] absolute z-[2] bottom-[-25px] left-[50px]">
+            <div class="bg-white h-[25px] w-[30px] relative top-[21px] left-[10px] rounded-t-[25px] rounded-b-[10px]">
+                <div class="bg-white h-[10px] w-[10px] rounded-full relative bottom-[13px] left-[9.5px]"></div>
+                <div class="bg-white h-[10px] w-[10px] rounded-full relative bottom-[17.2px] right-[2.5px]"></div>
+                <div class="bg-white h-[10px] w-[10px] rounded-full relative bottom-[27.2px] left-[22px]"></div>
+            </div>
+        </div>
+        <div
+            class="bg-[#4d4449] h-[50px] w-[50px] rounded-t-[40px] rounded-b-[20px] absolute z-[2] bottom-[-25px] right-[50px]">
+            <div class="bg-white h-[25px] w-[30px] relative top-[21px] left-[10px] rounded-t-[25px] rounded-b-[10px]">
+                <div class="bg-white h-[10px] w-[10px] rounded-full relative bottom-[13px] left-[9.5px]"></div>
+                <div class="bg-white h-[10px] w-[10px] rounded-full relative bottom-[17.2px] right-[2.5px]"></div>
+                <div class="bg-white h-[10px] w-[10px] rounded-full relative bottom-[27.2px] left-[22px]"></div>
+            </div>
+        </div>
+
+        <!-- Hands -->
+        <div
+            class="bg-[#4d4449] h-[45px] w-[35px] rounded-t-[10px] rounded-b-[30px] z-[2] transition-all duration-1000 absolute top-[-10px] left-[25px] handl">
+        </div>
+        <div
+            class="bg-[#4d4449] h-[45px] w-[35px] rounded-t-[10px] rounded-b-[30px] z-[2] transition-all duration-1000 absolute top-[-10px] right-[25px] handr">
+        </div>
+    </div>
+
+    <script>
+        // alert("Try to enter username or password to see the panda reacting to your actions.");
+        $(document).ready(function () {
+            $(":text").focus(function () {
+                $(".handl").css({
+                    transform: 'rotate(0deg)',
+                    top: '-10px',
+                    left: '25px',
+                    height: '45px',
+                    width: '35px'
+                });
+                $(".handr").css({
+                    transform: 'rotate(0deg)',
+                    top: '-10px',
+                    right: '25px',
+                    height: '45px',
+                    width: '35px'
+                });
+                $(".eyeball1").css({
+                    top: '20px',
+                    left: '13px'
+                });
+                $(".eyeball2").css({
+                    top: '20px',
+                    left: '8px'
+                });
+            });
+            $(":password").focus(function () {
+                $(".eyeball1").css({
+                    top: '10px',
+                    left: '10px'
+                });
+                $(".eyeball2").css({
+                    top: '10px',
+                    left: '10px'
+                });
+                $(".handl").css({
+                    transform: 'rotate(-150deg)',
+                    top: '-90px',
+                    left: '75px',
+                    height: '90px',
+                    width: '40px'
+                });
+                $(".handr").css({
+                    transform: 'rotate(150deg)',
+                    top: '-90px',
+                    right: '75px',
+                    height: '90px',
+                    width: '40px'
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
