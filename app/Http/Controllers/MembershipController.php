@@ -20,96 +20,260 @@ class MembershipController extends Controller
         return view('memberships.create');
     }
 
-    public function store(Request $request, AppSettings $appSettings)
+    public function mcreate()
     {
-        $validated = $request->validate([
-            'company_name' => 'nullable|string|max:255',
-            'company_type' => 'nullable|in:Limited Company,Proprietorship,Foreign Joint Venture,Partnership',
-            'director_name' => 'nullable|string|max:255',
-            'nominated_director' => 'nullable|string|max:255',
-            'address' => 'nullable|string|max:500',
-            'telephone' => 'nullable|string|max:20',
-            'phone' => 'nullable|string|max:20',
-            'email' => 'nullable|email|max:255',
-            'gender' => 'nullable|in:Male,Female',
-            'machine_count' => 'nullable|integer|min:0',
-            'brand' => 'nullable|string|max:255',
-            'total_head' => 'nullable|string|max:255',
-            'needle_colors' => 'nullable|string|max:255',
-            'payment_date' => 'nullable|date',
-            'payment_year' => 'nullable|integer',
-            'sister_concerns' => 'nullable|string',
-            'remarks' => 'nullable|string',
-            'nomination_certificate' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
-            'trade_license' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
-            'factory_photos' => 'nullable|array|min:3|max:5',
-            'factory_photos.*' => 'image|mimes:jpg,jpeg,png|max:2048',
-            'director_photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-        ]);
-
-        // Define a mapping of company types to membership fees
-        $membershipFees = [
-            'Limited Company' => $appSettings->limited_company_fee,
-            'Proprietorship' => $appSettings->proprietorship_fee,
-            'Foreign Joint Venture' => $appSettings->foreign_joint_venture_fee,
-            'Partnership' => $appSettings->partnership,
-        ];
-
-        // Calculate membership_fee
-        $validated['membership_fee'] = $membershipFees[$validated['company_type']] ?? null;
-
-        // Calculate yearly fee based on machine count
-        $machines = (int) $validated['machine_count'];
-        if ($machines >= 10) {
-            $validated['yearly_subscription'] = $appSettings->machine_fee_10_plus;
-        } elseif ($machines >= 5) {
-            $validated['yearly_subscription'] = $appSettings->machine_fee_5_to_9;
-        } else {
-            $validated['yearly_subscription'] = $appSettings->machine_fee_1_to_4;
-        }
-
-        // Handle file uploads
-        try {
-            $validated['user_id'] = Auth::user()->id;
-            $validated['is_active'] = false;
-
-            // Upload nomination certificate
-            if ($request->hasFile('nomination_certificate')) {
-                $validated['nomination_certificate'] = $request->file('nomination_certificate')
-                    ->store('membership/documents', 'public');
-            }
-
-            // Upload trade license
-            if ($request->hasFile('trade_license')) {
-                $validated['trade_license'] = $request->file('trade_license')
-                    ->store('membership/documents', 'public');
-            }
-
-            // Upload director photo
-            if ($request->hasFile('director_photo')) {
-                $validated['director_photo'] = $request->file('director_photo')
-                    ->store('membership/photos', 'public');
-            }
-
-            // Upload factory photos (multiple)
-            if ($request->hasFile('factory_photos')) {
-                $factoryPhotos = [];
-                foreach ($request->file('factory_photos') as $photo) {
-                    $factoryPhotos[] = $photo->store('membership/factory_photos', 'public');
-                }
-                $validated['factory_photos'] = $factoryPhotos;
-            }
-
-            // Create membership
-            Membership::create($validated);
-
-            return redirect()->back()->with('success', 'Membership submitted successfully!');
-        } catch (\Exception $e) {
-            return redirect()->back()
-                ->withInput()
-                ->with('error', 'Error saving membership: ' . $e->getMessage());
-        }
+        return view('memberships.mcreate');
     }
+
+    // public function store(Request $request, AppSettings $appSettings)
+    // {
+    //     $validated = $request->validate([
+    //         'company_name' => 'nullable|string|max:255',
+    //         'company_type' => 'nullable|in:Limited Company,Proprietorship,Foreign Joint Venture,Partnership',
+    //         'director_name' => 'nullable|string|max:255',
+    //         'nominated_director' => 'nullable|string|max:255',
+    //         'address' => 'nullable|string|max:500',
+    //         'telephone' => 'nullable|string|max:20',
+    //         'phone' => 'nullable|string|max:20',
+    //         'email' => 'nullable|email|max:255',
+    //         'gender' => 'nullable|in:Male,Female',
+    //         'machine_count' => 'nullable|integer|min:0',
+    //         'brand' => 'nullable|string|max:255',
+    //         'total_head' => 'nullable|string|max:255',
+    //         'needle_colors' => 'nullable|string|max:255',
+    //         'payment_date' => 'nullable|date',
+    //         'payment_year' => 'nullable|integer',
+    //         'sister_concerns' => 'nullable|string',
+    //         'remarks' => 'nullable|string',
+    //         'nomination_certificate' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+    //         'trade_license' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+    //         'factory_photos' => 'nullable|array|min:3|max:5',
+    //         'factory_photos.*' => 'image|mimes:jpg,jpeg,png|max:2048',
+    //         'director_photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+    //     ]);
+
+    //     // Define a mapping of company types to membership fees
+    //     $membershipFees = [
+    //         'Limited Company' => $appSettings->limited_company_fee,
+    //         'Proprietorship' => $appSettings->proprietorship_fee,
+    //         'Foreign Joint Venture' => $appSettings->foreign_joint_venture_fee,
+    //         'Partnership' => $appSettings->partnership,
+    //     ];
+
+    //     // Calculate membership_fee
+    //     $validated['membership_fee'] = $membershipFees[$validated['company_type']] ?? null;
+
+    //     // Calculate yearly fee based on machine count
+    //     $machines = (int) $validated['machine_count'];
+    //     if ($machines >= 10) {
+    //         $validated['yearly_subscription'] = $appSettings->machine_fee_10_plus;
+    //     } elseif ($machines >= 5) {
+    //         $validated['yearly_subscription'] = $appSettings->machine_fee_5_to_9;
+    //     } else {
+    //         $validated['yearly_subscription'] = $appSettings->machine_fee_1_to_4;
+    //     }
+
+    //     // Handle file uploads
+    //     try {
+    //         $validated['user_id'] = Auth::user()->id;
+    //         $validated['is_active'] = false;
+
+    //         // Upload nomination certificate
+    //         if ($request->hasFile('nomination_certificate')) {
+    //             $validated['nomination_certificate'] = $request->file('nomination_certificate')
+    //                 ->store('membership/documents', 'public');
+    //         }
+
+    //         // Upload trade license
+    //         if ($request->hasFile('trade_license')) {
+    //             $validated['trade_license'] = $request->file('trade_license')
+    //                 ->store('membership/documents', 'public');
+    //         }
+
+    //         // Upload director photo
+    //         if ($request->hasFile('director_photo')) {
+    //             $validated['director_photo'] = $request->file('director_photo')
+    //                 ->store('membership/photos', 'public');
+    //         }
+
+    //         // Upload factory photos (multiple)
+    //         if ($request->hasFile('factory_photos')) {
+    //             $factoryPhotos = [];
+    //             foreach ($request->file('factory_photos') as $photo) {
+    //                 $factoryPhotos[] = $photo->store('membership/factory_photos', 'public');
+    //             }
+    //             $validated['factory_photos'] = $factoryPhotos;
+    //         }
+
+    //         // Create membership
+    //         Membership::create($validated);
+
+    //         return redirect()->back()->with('success', 'Membership submitted successfully!');
+    //     } catch (\Exception $e) {
+    //         return redirect()->back()
+    //             ->withInput()
+    //             ->with('error', 'Error saving membership: ' . $e->getMessage());
+    //     }
+    // }
+
+
+public function store(Request $request, AppSettings $appSettings)
+{
+    $validated = $request->validate([
+        'member_type' => 'nullable|numeric',
+        'subscription_fee' => 'nullable|integer|min:0',
+        'new_fee' => 'nullable|integer|min:0',
+        'life_member_fee' => 'nullable|integer|min:0',
+        'donor_member_fee' => 'nullable|integer|min:0',
+        'full_name' => 'nullable|string|max:255',
+        'father_name' => 'nullable|string|max:255',
+        'phone' => 'nullable|string|max:20',
+        'profession' => 'nullable|string|max:255',
+        'profession_doc_type' => 'nullable|string|max:255',
+        'present_address' => 'nullable|string|max:255',
+        'permanent_address' => 'nullable|string|max:255',
+        'union_name' => 'nullable|string|max:255',
+        'ward' => 'nullable|string|max:255',
+        'guardian_type' => 'nullable|numeric',
+        'guardian_phone' => 'nullable|string|max:20',
+        'present_address_doc_type' => 'nullable|string|max:255',
+        'gender' => 'nullable|in:Male,Female',
+
+        // File validations
+        'profession_doc' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+        'present_address_doc' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+        'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+    ]);
+
+
+    try {
+        $validated['user_id'] = Auth::id();
+        $validated['is_active'] = false;
+
+        // if ($request->hasFile('profession_doc') && $request->file('profession_doc')->isValid()) {
+        //     $file = $request->file('profession_doc');
+        //     $filename = uniqid().'_'.$file->getClientOriginalName();
+        //     $validated['profession_doc'] = $file->storeAs('membership/documents', $filename, 'public');
+        // }
+
+        // if ($request->hasFile('present_address_doc') && $request->file('present_address_doc')->isValid()) {
+        //     $file = $request->file('present_address_doc');
+        //     $filename = uniqid().'_'.$file->getClientOriginalName();
+        //     $validated['present_address_doc'] = $file->storeAs('membership/documents', $filename, 'public');
+        // }
+
+        // if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
+        //     $file = $request->file('photo');
+        //     $filename = uniqid().'_'.$file->getClientOriginalName();
+        //     $validated['photo'] = $file->storeAs('membership/photos', $filename, 'public');
+        // }
+        Membership::create($validated);
+
+        return redirect()->back()->with('success', 'Membership submitted successfully!');
+    } catch (\Exception $e) {
+        return redirect()->back()
+            ->withInput()
+            ->with('error', 'Error saving membership: ' . $e->getMessage());
+    }
+}
+
+
+
+    // public function store(Request $request, AppSettings $appSettings)
+    // {
+
+
+    //     $validated = $request->validate([
+    //         'member_type' => 'nullable|numeric',
+    //         'subscription_fee' => 'nullable|integer|min:0',
+    //         'new_fee' => 'nullable|integer|min:0',
+    //         'life_member_fee' => 'nullable|integer|min:0',
+    //         'donor_member_fee' => 'nullable|integer|min:0',
+    //         'full_name' => 'nullable||string|max:255',
+    //         'father_name' => 'nullable|string|max:255',
+    //         'phone' => 'nullable|string|max:20',
+    //         'profession' => 'nullable|string|max:255',
+    //         'profession_doc_type' => 'nullable|string|max:255',
+    //         'present_address' => 'nullable|string|max:255',
+    //         'permanent_address' => 'nullable|string|max:255',
+    //         'union_name' => 'nullable|string|max:255',
+    //         'ward' => 'nullable|string|max:255',
+    //         'guardian_type' => 'nullable|numeric',
+    //         'guardian_phone' => 'nullable|string|max:20',
+    //         'present_address_doc_type' => 'nullable|string|max:255',
+    //         'gender' => 'nullable|in:Male,Female',
+    //         // 'profession_doc' => 'nullable|array|min:3|max:5',
+    //         // 'profession_doc.*' => 'image|mimes:jpg,jpeg,png|max:2048',
+    //         'profession_doc' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+    //         'present_address_doc' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+    //         'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+    //     ]);
+
+    //     // dd($request->all());
+
+    //     // // Define a mapping of company types to membership fees
+    //     // $membershipFees = [
+    //     //     'Limited Company' => $appSettings->limited_company_fee,
+    //     //     'Proprietorship' => $appSettings->proprietorship_fee,
+    //     //     'Foreign Joint Venture' => $appSettings->foreign_joint_venture_fee,
+    //     //     'Partnership' => $appSettings->partnership,
+    //     // ];
+
+    //     // Calculate membership_fee
+    //     // $validated['membership_fee'] = $membershipFees[$validated['company_type']] ?? null;
+
+    //     // Calculate yearly fee based on machine count
+    //     // $machines = (int) $validated['machine_count'];
+    //     // if ($machines >= 10) {
+    //     //     $validated['yearly_subscription'] = $appSettings->machine_fee_10_plus;
+    //     // } elseif ($machines >= 5) {
+    //     //     $validated['yearly_subscription'] = $appSettings->machine_fee_5_to_9;
+    //     // } else {
+    //     //     $validated['yearly_subscription'] = $appSettings->machine_fee_1_to_4;
+    //     // }
+
+    //     // Handle file uploads
+    //     try {
+    //         $validated['user_id'] = Auth::user()->id;
+    //         $validated['is_active'] = false;
+
+    //         // Upload nomination certificate
+    //         if ($request->hasFile('profession_doc')) {
+    //             $validated['profession_doc'] = $request->file('profession_doc')
+    //                 ->store('membership/documents', 'public');
+    //         }
+
+    //         // Upload trade license
+    //         if ($request->hasFile('present_address_doc')) {
+    //             $validated['present_address_doc'] = $request->file('present_address_doc')
+    //                 ->store('membership/documents', 'public');
+    //         }
+
+    //         // Upload director photo
+    //         if ($request->hasFile('photo')) {
+    //             $validated['photo'] = $request->file('photo')
+    //                 ->store('membership/photos', 'public');
+    //         }
+
+    //         // // Upload factory photos (multiple)
+    //         // if ($request->hasFile('factory_photos')) {
+    //         //     $factoryPhotos = [];
+    //         //     foreach ($request->file('factory_photos') as $photo) {
+    //         //         $factoryPhotos[] = $photo->store('membership/factory_photos', 'public');
+    //         //     }
+    //         //     $validated['factory_photos'] = $factoryPhotos;
+    //         // }
+
+    //         // Create membership
+    //         Membership::create($validated);
+
+    //         return redirect()->back()->with('success', 'Membership submitted successfully!');
+    //     } catch (\Exception $e) {
+    //         return redirect()->back()
+    //             ->withInput()
+    //             ->with('error', 'Error saving membership: ' . $e->getMessage());
+    //     }
+    // }
 
 
     public function downloadPhoto($id)

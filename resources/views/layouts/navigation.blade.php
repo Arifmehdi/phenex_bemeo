@@ -21,6 +21,9 @@
                     <x-nav-link :href="route('membership.create')" :active="request()->routeIs('membership.create')">
                         {{ __('Membership') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('new.membership.create')" :active="request()->routeIs('new.membership.create')">
+                        {{ __('New Membership') }}
+                    </x-nav-link>
                     @if (Auth::user()->membership()->exists())
                         @if (Auth::user()->membership->membership_expire_date < now())
                             <x-nav-link :href="route('renew-membership.create')" :active="request()->routeIs('renew-membership.create')">

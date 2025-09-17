@@ -122,6 +122,31 @@ class Settings extends SettingsPage
                                     ->url(),
                             ])->columns(2),
 
+                        Section::make('New Fees')
+                            ->schema([
+                                TextInput::make('subscription_fee')
+                                    ->label('Subscription Fee')
+                                    ->numeric()
+                                    ->default(120)
+                                    ->required(),
+                                TextInput::make('new_fee')
+                                    ->label('New Fee')
+                                    ->numeric()
+                                    ->default(20)
+                                    ->required(),
+                                TextInput::make('life_member_fee')
+                                    ->label('Life Member Fee')
+                                    ->numeric()
+                                    ->default(10000)
+                                    ->required(),
+                                TextInput::make('donor_member_fee')
+                                    ->label('Donor Member Fee')
+                                    ->numeric()
+                                    ->default(100000)
+                                    ->required(),
+                            ])->columns(2),
+
+
                         Section::make('Fees')
                             ->schema([
                                 TextInput::make('limited_company_fee')

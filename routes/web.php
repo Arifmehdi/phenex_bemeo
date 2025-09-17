@@ -69,6 +69,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // membership route
+    Route::get('new/membership/create', [MembershipController::class, 'mcreate'])->name('new.membership.create');
     Route::get('membership/create', [MembershipController::class, 'create'])->name('membership.create');
     Route::post('membership', [MembershipController::class, 'store'])->name('membership.store');
     Route::delete('/membership/destroy', [MembershipController::class, 'destroy'])->name('membership.destroy');

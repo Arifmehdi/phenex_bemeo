@@ -40,7 +40,30 @@ class Membership extends Model
         'advance_amount',
         'opening_balance',
         'bad_debit',
+        
+        //new fees
+        'subscription_fee',
+        'new_fee',
+        'life_member_fee',
+        'donor_member_fee',
 
+        'member_type',
+        'father_name',
+        'profession',
+        'profession_doc',
+        'profession_doc_type',
+        'present_address',
+        'permanent_address',
+        'ward',
+        'guardian_phone',
+        'present_address_doc_type',
+        'present_address_doc',
+        'photo',
+        'full_name',
+        'union_name',
+        'guardian_type',
+
+        
         // Affiliated Organization
         'sister_concerns',
         'remarks',
@@ -57,6 +80,7 @@ class Membership extends Model
         'membership_expire_date',
         'existing_member',
     ];
+
 
     protected $casts = [
         'factory_photos' => 'array',

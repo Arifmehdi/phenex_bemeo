@@ -55,7 +55,7 @@
         <div class="flex items-center justify-between pb-4 mb-6 border-b-4 border-gray-300">
             <div>
                 <h1 class="text-2xl font-bold text-green-600">
-                    MEMBERSHIP REGITRETION 054
+                    MEMBERSHIP REGITRETION
 
                     @if ($hasMembership)
                         @if ($membership->is_active)

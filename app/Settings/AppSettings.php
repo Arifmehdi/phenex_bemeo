@@ -39,6 +39,12 @@ class AppSettings extends Settings
     public int $age_1_to_9 = 1000;
     public int $age_10_up = 2000;
 
+    public ?int $subscription_fee = 120;
+    public ?int $new_fee = 20;
+    public ?int $life_member_fee = 10000;
+    public ?int $donor_member_fee = 100000;
+
+
     public static function group(): string
     {
         return 'app';
