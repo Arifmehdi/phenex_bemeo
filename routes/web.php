@@ -20,6 +20,24 @@ use App\Http\Controllers\TokenPrintController;
 use App\Models\EventMemberToken;
 use Barryvdh\DomPDF\Facade\Pdf;
 
+use Illuminate\Support\Facades\Artisan;
+
+Route::get('/clear-all', function () {
+    // Only allow admin access, optional
+    // if (!request()->has('secret') || request('secret') !== 'mysecretkey') {
+    //     abort(403, 'Unauthorized action.');
+    // }
+
+    // Run artisan commands
+    Artisan::call('config:clear');
+    Artisan::call('route:clear');
+    Artisan::call('cache:clear');
+
+    return '✅ Config, route, and cache cleared successfully!';
+});
+
+
+
 Route::get('/admin/memberships/{membership}/pdf', [MembershipPdfController::class, 'download'])->name('memberships.pdf');
 
 Route::get('/adm/memberships/print', [MembershipController::class, 'print'])->name('memberships.print');

@@ -18,9 +18,9 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('membership.create')" :active="request()->routeIs('membership.create')">
+                    {{--<x-nav-link :href="route('membership.create')" :active="request()->routeIs('membership.create')">
                         {{ __('Membership') }}
-                    </x-nav-link>
+                    </x-nav-link>--}}
                     <x-nav-link :href="route('new.membership.create')" :active="request()->routeIs('new.membership.create')">
                         {{ __('New Membership') }}
                     </x-nav-link>
