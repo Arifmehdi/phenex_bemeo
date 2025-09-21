@@ -19,18 +19,16 @@ class Membership extends Model
         'nominated_director',
         'address',
         'telephone',
-        'phone',
         'email',
-        'gender',
         'membership_fee',
         'due_amount',
-
+        
         // Matching Details
         'machine_count',
         'brand',
         'total_head',
         'needle_colors',
-
+        
         // Service Fee
         'yearly_subscription',
         'receipt_no',
@@ -41,27 +39,43 @@ class Membership extends Model
         'opening_balance',
         'bad_debit',
         
+        //newly added for bemeo start 
+        'member_type',
+        
         //new fees
         'subscription_fee',
         'new_fee',
         'life_member_fee',
         'donor_member_fee',
-
-        'member_type',
+        
+        'full_name',
         'father_name',
+        'phone',
         'profession',
-        'profession_doc',
         'profession_doc_type',
         'present_address',
-        'permanent_address',
-        'ward',
-        'guardian_phone',
-        'present_address_doc_type',
-        'present_address_doc',
-        'photo',
-        'full_name',
-        'union_name',
+        'pre_thana',
+        'pre_ward',
+        
+        'gender',
+        'payment_type', // payment_type to db 
+        'payment_reciever',
+        'transaction_id',
+        
         'guardian_type',
+        'guardian_phone',
+        'g_present_address_doc_type',
+        
+        'photo',
+        'g_present_address_doc',
+        'profession_doc',
+        //newly added for bemeo end 
+
+
+        'permanent_address',
+        'permanent_district', // district to db 
+        'permanent_thana', // permanent_thana to db
+        'permanent_ward', //permanent_ward to db  
 
         
         // Affiliated Organization

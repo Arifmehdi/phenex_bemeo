@@ -35,19 +35,16 @@ class Settings extends SettingsPage
                             ->columnSpanFull(),
                         Grid::make()->schema([
                             FileUpload::make('app_logo')
-                                ->directory('assets')
-                                ->visibility('public')
-                                ->moveFiles(),
+                                ->disk('public')
+                                ->image(),
 
                             FileUpload::make('app_logo_dark')
-                                ->directory('assets')
-                                ->visibility('public')
-                                ->moveFiles(),
+                                ->disk('public')
+                                ->image(),
 
                             FileUpload::make('app_favicon')
-                                ->directory('assets')
-                                ->visibility('public')
-                                ->moveFiles(),
+                                ->disk('public')
+                                ->image(),
                         ])->columns(3),
                         TextInput::make('support_email')
                             ->label(__('app-settings::app-settings.form.field.app.support.email'))
@@ -122,7 +119,7 @@ class Settings extends SettingsPage
                                     ->url(),
                             ])->columns(2),
 
-                        Section::make('New Fees')
+                        Section::make('Fees')
                             ->schema([
                                 TextInput::make('subscription_fee')
                                     ->label('Subscription Fee')
@@ -147,47 +144,47 @@ class Settings extends SettingsPage
                             ])->columns(2),
 
 
-                        Section::make('Fees')
-                            ->schema([
-                                TextInput::make('limited_company_fee')
-                                    ->label('Limited Company Fee')
-                                    ->numeric()
-                                    ->default(10000)
-                                    ->required(),
-                                TextInput::make('proprietorship_fee')
-                                    ->label('Proprietorship Fee')
-                                    ->numeric()
-                                    ->default(5000)
-                                    ->required(),
-                                TextInput::make('foreign_joint_venture_fee')
-                                    ->label('Foreign Joint Venture Fee')
-                                    ->numeric()
-                                    ->default(20000)
-                                    ->required(),
-                                TextInput::make('partnership')
-                                    ->label('Partnership Fee')
-                                    ->numeric()
-                                    ->default(0)
-                                    ->required(),
+                        // Section::make('Fees')
+                        //     ->schema([
+                        //         TextInput::make('limited_company_fee')
+                        //             ->label('Limited Company Fee')
+                        //             ->numeric()
+                        //             ->default(10000)
+                        //             ->required(),
+                        //         TextInput::make('proprietorship_fee')
+                        //             ->label('Proprietorship Fee')
+                        //             ->numeric()
+                        //             ->default(5000)
+                        //             ->required(),
+                        //         TextInput::make('foreign_joint_venture_fee')
+                        //             ->label('Foreign Joint Venture Fee')
+                        //             ->numeric()
+                        //             ->default(20000)
+                        //             ->required(),
+                        //         TextInput::make('partnership')
+                        //             ->label('Partnership Fee')
+                        //             ->numeric()
+                        //             ->default(0)
+                        //             ->required(),
 
-                                TextInput::make('machine_fee_1_to_4')
-                                    ->label('Machine Fee (1 to 4)')
-                                    ->numeric()
-                                    ->default(2000)
-                                    ->required(),
+                        //         TextInput::make('machine_fee_1_to_4')
+                        //             ->label('Machine Fee (1 to 4)')
+                        //             ->numeric()
+                        //             ->default(2000)
+                        //             ->required(),
 
-                                TextInput::make('machine_fee_5_to_9')
-                                    ->label('Machine Fee (5 to 9)')
-                                    ->numeric()
-                                    ->default(5000)
-                                    ->required(),
+                        //         TextInput::make('machine_fee_5_to_9')
+                        //             ->label('Machine Fee (5 to 9)')
+                        //             ->numeric()
+                        //             ->default(5000)
+                        //             ->required(),
 
-                                TextInput::make('machine_fee_10_plus')
-                                    ->label('Machine Fee (10+)')
-                                    ->numeric()
-                                    ->default(10000)
-                                    ->required(),
-                            ])->columns(2),
+                        //         TextInput::make('machine_fee_10_plus')
+                        //             ->label('Machine Fee (10+)')
+                        //             ->numeric()
+                        //             ->default(10000)
+                        //             ->required(),
+                        //     ])->columns(2),
 
                         Section::make('Event Join Fee')
                             ->schema([
@@ -214,7 +211,18 @@ class Settings extends SettingsPage
 
     protected function mutateFormDataBeforeSave(array $data): array
     {
-        // dd($data);
+        if ($data['app_logo'] instanceof UploadedFile) {
+            $data['app_logo'] = $data['app_logo']->store('assets', 'public');
+        }
+
+        if ($data['app_logo_dark'] instanceof UploadedFile) {
+            $data['app_logo_dark'] = $data['app_logo_dark']->store('assets', 'public');
+        }
+
+        if ($data['app_favicon'] instanceof UploadedFile) {
+            $data['app_favicon'] = $data['app_favicon']->store('assets', 'public');
+        }
+
         return $data;
     }
 }

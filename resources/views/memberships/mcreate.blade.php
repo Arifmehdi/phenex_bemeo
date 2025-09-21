@@ -94,57 +94,57 @@
                 MEMBER TYPE
             </h2>
 
-<div class="border border-gray-300 rounded-lg p-4 mt-3">
-    <!-- Radio buttons -->
-    <div class="mb-4">
-        <label class="flex items-center gap-2">
-            <input type="radio" name="member_type" value="1"
-                class="h-4 w-4 text-blue-600 member-type"
-                @if ($hasMembership) {{ $membership->member_type == 1 ? 'checked' : '' }} disabled @else checked @endif>
-            <span>General Member</span>
-        </label>
-        <label class="flex items-center gap-2 mt-2">
-            <input type="radio" name="member_type" value="2"
-                class="h-4 w-4 text-blue-600 member-type"
-                @if ($hasMembership) {{ $membership->member_type == 2 ? 'checked' : '' }} disabled @endif>
-            <span>Existing Member</span>
-        </label>
-    </div>
+        <div class="border border-gray-300 rounded-lg p-4 mt-3">
+            <!-- Radio buttons -->
+            <div class="mb-4">
+                <label class="flex items-center gap-2">
+                    <input type="radio" name="member_type" value="1"
+                        class="h-4 w-4 text-blue-600 member-type"
+                        @if ($hasMembership) {{ $membership->member_type == 1 ? 'checked' : '' }} disabled @else checked @endif>
+                    <span>General Member</span>
+                </label>
+                <label class="flex items-center gap-2 mt-2">
+                    <input type="radio" name="member_type" value="2"
+                        class="h-4 w-4 text-blue-600 member-type"
+                        @if ($hasMembership) {{ $membership->member_type == 2 ? 'checked' : '' }} disabled @endif>
+                    <span>Existing Member</span>
+                </label>
+            </div>
 
-    <!-- Fees -->
-    <div class="flex gap-4 mb-4">
-        <!-- Subscription Fee -->
-        <div class="w-1/2">
-            <div class="flex items-center gap-2 flex-nowrap">
-                <span class="whitespace-nowrap">Subscription Fee</span>
-                <input type="hidden" id="subscription_fee" value="{{ $appSettings->subscription_fee ?? 0 }}">
-                <input type="number"
-                    class="p-2 border border-gray-300 rounded flex-1" 
-                    value="{{ $appSettings->subscription_fee ?? 0 }}" disabled/>
-                <span>BDT</span>
+            <!-- Fees -->
+            <div class="flex gap-4 mb-4">
+                <!-- Subscription Fee -->
+                <div class="w-1/2">
+                    <div class="flex items-center gap-2 flex-nowrap">
+                        <span class="whitespace-nowrap">Subscription Fee</span>
+                        <input type="hidden" name="subscription_fee" id="subscription_fee" value="{{ $appSettings->subscription_fee ?? 0 }}">
+                        <input type="number"
+                            class="p-2 border border-gray-300 rounded flex-1" 
+                            value="{{ $appSettings->subscription_fee ?? 0 }}" disabled/>
+                        <span>BDT</span>
+                    </div>
+                </div>
+
+                <!-- New Fee -->
+                <div class="w-1/2">
+                    <div class="flex items-center gap-2 flex-nowrap">
+                        <span class="whitespace-nowrap">New Fee</span>
+                        <input type="hidden" name="new_fee" id="new_fee" value="{{ $appSettings->new_fee ?? 0 }}">
+                        <input type="number"
+                            class="p-2 border border-gray-300 rounded flex-1" 
+                            value="{{ $appSettings->new_fee ?? 0 }}" disabled/>
+                        <span>BDT</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Total -->
+            <div class="flex gap-4 mt-3 mb-3">
+                <label class="mb-1.5 block font-semibold">
+                    <strong>Total : <span id="totalfee">{{ ($appSettings->subscription_fee + $appSettings->new_fee) ?? 0 }}</span> BDT</strong>
+                </label>
             </div>
         </div>
-
-        <!-- New Fee -->
-        <div class="w-1/2">
-            <div class="flex items-center gap-2 flex-nowrap">
-                <span class="whitespace-nowrap">New Fee</span>
-                <input type="hidden" id="new_fee" value="{{ $appSettings->new_fee ?? 0 }}">
-                <input type="number"
-                    class="p-2 border border-gray-300 rounded flex-1" 
-                    value="{{ $appSettings->new_fee ?? 0 }}" disabled/>
-                <span>BDT</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- Total -->
-    <div class="flex gap-4 mt-3 mb-3">
-        <label class="mb-1.5 block font-semibold">
-            <strong>Total : <span id="totalfee">{{ ($appSettings->subscription_fee + $appSettings->new_fee) ?? 0 }}</span> BDT</strong>
-        </label>
-    </div>
-</div>
             <!-- Life member Contribution -->
             <div class="border border-gray-300 rounded-lg p-4 mt-3">
                 <div class="mb-4">
@@ -210,7 +210,7 @@
 
                 <div class="">
                     <label class="mb-1.5 block font-semibold required">Profession</label>
-                    <select name="profession" id="" class="w-full p-2 border border-gray-300 rounded" required >
+                    <select name="profession" id="" class="w-full p-2 border border-gray-300 rounded" @if ($hasMembership) value="{{ $membership->profession }}" disabled @endif  required >
                         <option value="">-- Select Profession --</option>
                         <option value="Agriculture" {{ (isset($membership) && $membership->profession == 'Agriculture') ? 'selected' : '' }}>Agriculture</option>
                         <option value="Govt. Service Holder" {{ (isset($membership) && $membership->profession == 'Govt. Service Holder') ? 'selected' : '' }}>Govt. Service Holder</option>
@@ -224,7 +224,7 @@
 
                 <div class="">
                     <label class="mb-1.5 block font-semibold ">Profession Doc Type</label>
-                    <select name="profession_doc_type" id="" class="w-full p-2 border border-gray-300 rounded">
+                    <select name="profession_doc_type" id="" class="w-full p-2 border border-gray-300 rounded"  @if ($hasMembership) value="{{ $membership->profession_doc_type }}" disabled @endif required>
                         <option value="">-- Select Profession Doc Type--</option>
                         <option value="Visiting card" {{ (isset($membership) && $membership->profession_doc_type == 'Visiting card') ? 'selected' : '' }}>Visiting card</option>
                         <option value="Trade License" {{ (isset($membership) && $membership->profession_doc_type == 'Trade License') ? 'selected' : '' }}>Trade License</option>
@@ -244,72 +244,75 @@
 
                 <div class="">
                     <label class="mb-1.5 block font-semibold ">Thana</label>
-                    <select name="thana" id="thana" class="w-full p-2 border border-gray-300 rounded" required>
+                    <select name="pre_thana" id="thana" class="w-full p-2 border border-gray-300 rounded" @if ($hasMembership) value="{{ $membership->pre_thana }}" disabled @endif required>
                         <option value="">-- Select Thana --</option>
 
                         <!-- Dhaka North -->
                         <optgroup label="Dhaka North">
-                            <option value="Banani" {{ (isset($membership) && $membership->thana == 'Banani') ? 'selected' : '' }}>Banani</option>
-                            <option value="Bhashantek" {{ (isset($membership) && $membership->thana == 'Bhashantek') ? 'selected' : '' }}>Bhashantek</option>
-                            <option value="Bhatara" {{ (isset($membership) && $membership->thana == 'Bhatara') ? 'selected' : '' }}>Bhatara</option>
-                            <option value="Cantonment" {{ (isset($membership) && $membership->thana == 'Cantonment') ? 'selected' : '' }}>Cantonment</option>
-                            <option value="Darus Salam" {{ (isset($membership) && $membership->thana == 'Darus Salam') ? 'selected' : '' }}>Darus Salam</option>
-                            <option value="Gulshan" {{ (isset($membership) && $membership->thana == 'Gulshan') ? 'selected' : '' }}>Gulshan</option>
-                            <option value="Kafrul" {{ (isset($membership) && $membership->thana == 'Kafrul') ? 'selected' : '' }}>Kafrul</option>
-                            <option value="Khilkhet" {{ (isset($membership) && $membership->thana == 'Khilkhet') ? 'selected' : '' }}>Khilkhet</option>
-                            <option value="Mirpur" {{ (isset($membership) && $membership->thana == 'Mirpur') ? 'selected' : '' }}>Mirpur</option>
-                            <option value="Pallabi" {{ (isset($membership) && $membership->thana == 'Pallabi') ? 'selected' : '' }}>Pallabi</option>
-                            <option value="Tejgaon" {{ (isset($membership) && $membership->thana == 'Tejgaon') ? 'selected' : '' }}>Tejgaon</option>
-                            <option value="Tejgaon Industrial Area" {{ (isset($membership) && $membership->thana == 'Tejgaon Industrial Area') ? 'selected' : '' }}>Tejgaon Industrial Area</option>
-                            <option value="Uttara East" {{ (isset($membership) && $membership->thana == 'Uttara East') ? 'selected' : '' }}>Uttara East</option>
-                            <option value="Uttara West" {{ (isset($membership) && $membership->thana == 'Uttara West') ? 'selected' : '' }}>Uttara West</option>
+                            <option value="Banani" {{ (isset($membership) && $membership->pre_thana == 'Banani') ? 'selected' : '' }}>Banani</option>
+                            <option value="Bhashantek" {{ (isset($membership) && $membership->pre_thana == 'Bhashantek') ? 'selected' : '' }}>Bhashantek</option>
+                            <option value="Bhatara" {{ (isset($membership) && $membership->pre_thana == 'Bhatara') ? 'selected' : '' }}>Bhatara</option>
+                            <option value="Cantonment" {{ (isset($membership) && $membership->pre_thana == 'Cantonment') ? 'selected' : '' }}>Cantonment</option>
+                            <option value="Darus Salam" {{ (isset($membership) && $membership->pre_thana == 'Darus Salam') ? 'selected' : '' }}>Darus Salam</option>
+                            <option value="Gulshan" {{ (isset($membership) && $membership->pre_thana == 'Gulshan') ? 'selected' : '' }}>Gulshan</option>
+                            <option value="Kafrul" {{ (isset($membership) && $membership->pre_thana == 'Kafrul') ? 'selected' : '' }}>Kafrul</option>
+                            <option value="Khilkhet" {{ (isset($membership) && $membership->pre_thana == 'Khilkhet') ? 'selected' : '' }}>Khilkhet</option>
+                            <option value="Mirpur" {{ (isset($membership) && $membership->pre_thana == 'Mirpur') ? 'selected' : '' }}>Mirpur</option>
+                            <option value="Pallabi" {{ (isset($membership) && $membership->pre_thana == 'Pallabi') ? 'selected' : '' }}>Pallabi</option>
+                            <option value="Tejgaon" {{ (isset($membership) && $membership->pre_thana == 'Tejgaon') ? 'selected' : '' }}>Tejgaon</option>
+                            <option value="Tejgaon Industrial Area" {{ (isset($membership) && $membership->pre_thana == 'Tejgaon Industrial Area') ? 'selected' : '' }}>Tejgaon Industrial Area</option>
+                            <option value="Uttara East" {{ (isset($membership) && $membership->pre_thana == 'Uttara East') ? 'selected' : '' }}>Uttara East</option>
+                            <option value="Uttara West" {{ (isset($membership) && $membership->pre_thana == 'Uttara West') ? 'selected' : '' }}>Uttara West</option>
                         </optgroup>
 
                         <!-- Dhaka South -->
                         <optgroup label="Dhaka South">
-                            <option value="Bangshal" {{ (isset($membership) && $membership->thana == 'Bangshal') ? 'selected' : '' }}>Bangshal</option>
-                            <option value="Chawkbazar" {{ (isset($membership) && $membership->thana == 'Chawkbazar') ? 'selected' : '' }}>Chawkbazar</option>
-                            <option value="Demra" {{ (isset($membership) && $membership->thana == 'Demra') ? 'selected' : '' }}>Demra</option>
-                            <option value="Gandaria" {{ (isset($membership) && $membership->thana == 'Gandaria') ? 'selected' : '' }}>Gandaria</option>
-                            <option value="Hazaribagh" {{ (isset($membership) && $membership->thana == 'Hazaribagh') ? 'selected' : '' }}>Hazaribagh</option>
-                            <option value="Jatrabari" {{ (isset($membership) && $membership->thana == 'Jatrabari') ? 'selected' : '' }}>Jatrabari</option>
-                            <option value="Kadamtali" {{ (isset($membership) && $membership->thana == 'Kadamtali') ? 'selected' : '' }}>Kadamtali</option>
-                            <option value="Kamrangirchar" {{ (isset($membership) && $membership->thana == 'Kamrangirchar') ? 'selected' : '' }}>Kamrangirchar</option>
-                            <option value="Kotwali" {{ (isset($membership) && $membership->thana == 'Kotwali') ? 'selected' : '' }}>Kotwali</option>
-                            <option value="Lalbagh" {{ (isset($membership) && $membership->thana == 'Lalbagh') ? 'selected' : '' }}>Lalbagh</option>
-                            <option value="Motijheel" {{ (isset($membership) && $membership->thana == 'Motijheel') ? 'selected' : '' }}>Motijheel</option>
-                            <option value="Mugda" {{ (isset($membership) && $membership->thana == 'Mugda') ? 'selected' : '' }}>Mugda</option>
-                            <option value="Paltan" {{ (isset($membership) && $membership->thana == 'Paltan') ? 'selected' : '' }}>Paltan</option>
-                            <option value="Ramna" {{ (isset($membership) && $membership->thana == 'Ramna') ? 'selected' : '' }}>Ramna</option>
-                            <option value="Sabujbagh" {{ (isset($membership) && $membership->thana == 'Sabujbagh') ? 'selected' : '' }}>Sabujbagh</option>
-                            <option value="Shahbagh" {{ (isset($membership) && $membership->thana == 'Shahbagh') ? 'selected' : '' }}>Shahbagh</option>
-                            <option value="Shyampur" {{ (isset($membership) && $membership->thana == 'Shyampur') ? 'selected' : '' }}>Shyampur</option>
-                            <option value="Sutrapur" {{ (isset($membership) && $membership->thana == 'Sutrapur') ? 'selected' : '' }}>Sutrapur</option>
-                            <option value="Wari" {{ (isset($membership) && $membership->thana == 'Wari') ? 'selected' : '' }}>Wari</option>
+                            <option value="Bangshal" {{ (isset($membership) && $membership->pre_thana == 'Bangshal') ? 'selected' : '' }}>Bangshal</option>
+                            <option value="Chawkbazar" {{ (isset($membership) && $membership->pre_thana == 'Chawkbazar') ? 'selected' : '' }}>Chawkbazar</option>
+                            <option value="Demra" {{ (isset($membership) && $membership->pre_thana == 'Demra') ? 'selected' : '' }}>Demra</option>
+                            <option value="Gandaria" {{ (isset($membership) && $membership->pre_thana == 'Gandaria') ? 'selected' : '' }}>Gandaria</option>
+                            <option value="Hazaribagh" {{ (isset($membership) && $membership->pre_thana == 'Hazaribagh') ? 'selected' : '' }}>Hazaribagh</option>
+                            <option value="Jatrabari" {{ (isset($membership) && $membership->pre_thana == 'Jatrabari') ? 'selected' : '' }}>Jatrabari</option>
+                            <option value="Kadamtali" {{ (isset($membership) && $membership->pre_thana == 'Kadamtali') ? 'selected' : '' }}>Kadamtali</option>
+                            <option value="Kamrangirchar" {{ (isset($membership) && $membership->pre_thana == 'Kamrangirchar') ? 'selected' : '' }}>Kamrangirchar</option>
+                            <option value="Kotwali" {{ (isset($membership) && $membership->pre_thana == 'Kotwali') ? 'selected' : '' }}>Kotwali</option>
+                            <option value="Lalbagh" {{ (isset($membership) && $membership->pre_thana == 'Lalbagh') ? 'selected' : '' }}>Lalbagh</option>
+                            <option value="Motijheel" {{ (isset($membership) && $membership->pre_thana == 'Motijheel') ? 'selected' : '' }}>Motijheel</option>
+                            <option value="Mugda" {{ (isset($membership) && $membership->pre_thana == 'Mugda') ? 'selected' : '' }}>Mugda</option>
+                            <option value="Paltan" {{ (isset($membership) && $membership->pre_thana == 'Paltan') ? 'selected' : '' }}>Paltan</option>
+                            <option value="Ramna" {{ (isset($membership) && $membership->pre_thana == 'Ramna') ? 'selected' : '' }}>Ramna</option>
+                            <option value="Sabujbagh" {{ (isset($membership) && $membership->pre_thana == 'Sabujbagh') ? 'selected' : '' }}>Sabujbagh</option>
+                            <option value="Shahbagh" {{ (isset($membership) && $membership->pre_thana == 'Shahbagh') ? 'selected' : '' }}>Shahbagh</option>
+                            <option value="Shyampur" {{ (isset($membership) && $membership->pre_thana == 'Shyampur') ? 'selected' : '' }}>Shyampur</option>
+                            <option value="Sutrapur" {{ (isset($membership) && $membership->pre_thana == 'Sutrapur') ? 'selected' : '' }}>Sutrapur</option>
+                            <option value="Wari" {{ (isset($membership) && $membership->pre_thana == 'Wari') ? 'selected' : '' }}>Wari</option>
                         </optgroup>
 
-                        <option value="Other" {{ (isset($membership) && $membership->thana == 'Other') ? 'selected' : '' }}>Other</option>
+                        <option value="Other" {{ (isset($membership) && $membership->pre_thana == 'Other') ? 'selected' : '' }}>Other</option>
                     </select>
                 </div>
 
                 <div class="">
                     <label class="mb-1.5 block font-semibold ">Ward Number</label>
-                    <select name="ward" id="ward" class="w-full p-2 border border-gray-300 rounded">
+                    <select name="pre_ward" id="pre_ward" class="w-full p-2 border border-gray-300 rounded">
                         <option value="">--Select--</option>
                     </select>
+                </div>
+                <div class="sm:col-span-2">
+                    <label class="mb-1.5 block font-semibold required">Parmanent Address</label>
+                    <input type="text" name="permanent_address" class="w-full p-2 border border-gray-300 rounded" placeholder="Permanent Address"  @if ($hasMembership) value="{{ $membership->permanent_address }}" disabled @endif required/>
                 </div>
                 <div class="sm:col-span-2">
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <!-- District -->
                         <div>
                             <label class="mb-1.5 block font-semibold required">District (Permanent)</label>
-                            <select name="district" id="district" class="w-full p-2 border border-gray-300 rounded" required>
+                            <select name="permanent_district" id="district" class="w-full p-2 border border-gray-300 rounded" @if ($hasMembership) value="{{ $membership->permanent_district }}" disabled @endif required>
                                 <option value="">-- Select --</option>
-                                <option value="Dhaka">Dhaka</option>
-                                <option value="Belabo">Belabo</option>
+                                <option value="Dhaka" {{ (isset($membership) && $membership->permanent_district == 'Dhaka') ? 'selected' : '' }} >Dhaka</option>
+                                <option value="Belabo" {{ (isset($membership) && $membership->permanent_district == 'Belabo') ? 'selected' : '' }} >Belabo</option>
                             </select>
                         </div>
-
                         <!-- Thana / Union -->
                         <div>
                             <label class="mb-1.5 block font-semibold">Thana / Union (Permanent)</label>
@@ -367,18 +370,18 @@
                     <!-- Document Type -->
                     <div class="flex-1 min-w-0">
                         <label class="mb-1.5 block required">Document Type:</label>
-                        <select name="present_address_doc_type" class="w-full p-2 border border-gray-300 rounded" required>
+                        <select name="g_present_address_doc_type" class="w-full p-2 border border-gray-300 rounded" required>
                             <option value="">Select Document</option>
-                            <option value="Electric Bill" {{ (isset($membership) && $membership->present_address_doc_type == 'Electric Bill') ? 'selected' : '' }}>
+                            <option value="Electric Bill" {{ (isset($membership) && $membership->g_present_address_doc_type == 'Electric Bill') ? 'selected' : '' }}>
                                 Electric Bill
                             </option>
-                            <option value="Water bill" {{ (isset($membership) && $membership->present_address_doc_type == 'Water bill') ? 'selected' : '' }}>
+                            <option value="Water bill" {{ (isset($membership) && $membership->g_present_address_doc_type == 'Water bill') ? 'selected' : '' }}>
                                 Water bill
                             </option>
-                            <option value="House rent slip" {{ (isset($membership) && $membership->present_address_doc_type == 'House rent slip') ? 'selected' : '' }}>
+                            <option value="House rent slip" {{ (isset($membership) && $membership->g_present_address_doc_type == 'House rent slip') ? 'selected' : '' }}>
                                 House rent slip
                             </option>
-                            <option value="Others" {{ (isset($membership) && $membership->present_address_doc_type == 'Others') ? 'selected' : '' }}>
+                            <option value="Others" {{ (isset($membership) && $membership->g_present_address_doc_type == 'Others') ? 'selected' : '' }}>
                                 Others
                             </option>
                         </select>
@@ -388,7 +391,7 @@
                     <div class="flex-1 min-w-0">
                         <label class="mb-1.5 block required">Upload Document:</label>
                         <input type="file" 
-                            name="present_address_doc" 
+                            name="g_present_address_doc" 
                             class="w-full p-2 border border-gray-300 rounded" 
                             required />
                     </div>
@@ -428,25 +431,25 @@
         </div>
 
 
- <div class="flex gap-4 mb-4">
-    <!-- Payment Type -->
-    <div class="flex-1 min-w-0">
-        <label class="mb-1.5 block font-semibold required">Payment Type :</label>
-        <div class="flex items-center space-x-4">
-            <label class="flex items-center">
-                <input class="mr-2 payment-type" name="payment" type="radio" value="Cash" required>
-                Cash
-            </label>
-            <label class="flex items-center">
-                <input class="mr-2 payment-type" name="payment" type="radio" value="Bkash" required>
-                Bkash
-            </label>
-        </div>
-    </div>
+        <div class="flex gap-4 mb-4">
+            <!-- Payment Type -->
+            <div class="flex-1 min-w-0">
+                <label class="mb-1.5 block font-semibold required">Payment Type :</label>
+                <div class="flex items-center space-x-4">
+                    <label class="flex items-center">
+                        <input class="mr-2 payment-type" name="payment_type" type="radio" value="Cash" {{ (isset($membership) && $membership->payment_type == 'Cash') ? 'checked' : '' }} required>
+                        Cash
+                    </label>
+                    <label class="flex items-center">
+                        <input class="mr-2 payment-type" name="payment_type" type="radio" value="Bkash" {{ (isset($membership) && $membership->payment_type == 'Bkash') ? 'checked' : '' }}  required>
+                        Bkash
+                    </label>
+                </div>
+            </div>
 
-    <!-- Dynamic Payment Fields -->
-    <div class="flex-1 min-w-0" id="payment-extra"></div>
-</div>
+            <!-- Dynamic Payment Fields -->
+            <div class="flex-1 min-w-0" id="payment-extra"></div>
+        </div>
 
 
         <div class="mb-6">
@@ -568,15 +571,24 @@
     </script>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const checkbox = document.getElementById("agreeCheckbox");
-        const button = document.getElementById("submitBtn");
+        $(document).ready(function() {
+            const isActive = parseInt("{{ $membership->is_active ?? 0 }}"); // 0 or 1
+            const $checkbox = $("#agreeCheckbox");
+            const $button = $("#submitBtn");
 
-        // toggle button enable/disable
-        checkbox.addEventListener("change", function () {
-            button.disabled = !this.checked;
+            // Initially disable button
+            $button.prop("disabled", true);
+
+            // Listen to checkbox change
+            $checkbox.on("change", function() {
+                if ($(this).is(":checked") && isActive !== 1) {
+                    $button.prop("disabled", false); // Enable button
+                } else {
+                    $button.prop("disabled", true);  // Keep disabled
+                }
+            });
         });
-    });
+
     // new fees change according to radio button
     $(document).ready(function(){
         $(function () {
@@ -641,7 +653,7 @@
 
     $('#thana').change(function() {
         const thana = $(this).val();
-        const wardSelect = $('#ward');
+        const wardSelect = $('#pre_ward');
         wardSelect.empty().append('<option value="">--Select--</option>');
 
         if (wards[thana]) {
@@ -656,7 +668,7 @@
         const selectedThana = $('#thana').val();
         const selectedWard = "{{ isset($membership) ? $membership->ward : '' }}";
         if(selectedThana && wards[selectedThana]) {
-            const wardSelect = $('#ward');
+            const wardSelect = $('#pre_ward');
             wardSelect.empty().append('<option value="">--Select--</option>');
             wards[selectedThana].forEach(w => {
                 const selected = (w == selectedWard) ? 'selected' : '';
@@ -666,75 +678,98 @@
     });
 </script>
 <script>
-const permanentWards = {
-    // Dhaka
-    "Banani": [18, 19, 20],
-    "Bhashantek": [1, 2],
-    "Bhatara": [1, 2, 3],
-    "Cantonment": [1, 2],
-    "Darus Salam": [1, 2, 3, 4],
-    "Gulshan": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17],
-    "Kafrul": [1,2,3,4,5,6,7,8,9,10],
-    "Khilkhet": [1,2,3,4,5,6],
-    "Mirpur": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],
-    "Pallabi": [1,2,3,4,5,6],
-    "Tejgaon": [1,2,3,4,5,6],
-    "Tejgaon Industrial Area": [1,2,3],
-    "Uttara East": [1,2,3,4,5,6],
-    "Uttara West": [1,2,3,4,5,6],
-    "Bangshal": [1,2,3,4,5,6],
-    "Chawkbazar": [1,2,3],
-    "Demra": [1,2,3,4],
-    "Gandaria": [1,2,3,4],
-    "Hazaribagh": [1,2,3],
-    "Jatrabari": [1,2,3,4],
-    "Kadamtali": [1,2],
-    "Kamrangirchar": [1,2,3],
-    "Kotwali": [1,2,3,4],
-    "Lalbagh": [1,2,3,4],
-    "Motijheel": [1,2,3,4],
-    "Mugda": [1,2,3],
-    "Paltan": [1,2,3,4],
-    "Ramna": [1,2,3,4],
-    "Sabujbagh": [1,2,3],
-    "Shahbagh": [1,2,3],
-    "Shyampur": [1,2,3],
-    "Sutrapur": [1,2,3],
-    "Wari": [1,2,3],
+    const permanentWards = {
+        // Dhaka
+        "Banani": [18, 19, 20],
+        "Bhashantek": [1, 2],
+        "Bhatara": [1, 2, 3],
+        "Cantonment": [1, 2],
+        "Darus Salam": [1, 2, 3, 4],
+        "Gulshan": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17],
+        "Kafrul": [1,2,3,4,5,6,7,8,9,10],
+        "Khilkhet": [1,2,3,4,5,6],
+        "Mirpur": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],
+        "Pallabi": [1,2,3,4,5,6],
+        "Tejgaon": [1,2,3,4,5,6],
+        "Tejgaon Industrial Area": [1,2,3],
+        "Uttara East": [1,2,3,4,5,6],
+        "Uttara West": [1,2,3,4,5,6],
+        "Bangshal": [1,2,3,4,5,6],
+        "Chawkbazar": [1,2,3],
+        "Demra": [1,2,3,4],
+        "Gandaria": [1,2,3,4],
+        "Hazaribagh": [1,2,3],
+        "Jatrabari": [1,2,3,4],
+        "Kadamtali": [1,2],
+        "Kamrangirchar": [1,2,3],
+        "Kotwali": [1,2,3,4],
+        "Lalbagh": [1,2,3,4],
+        "Motijheel": [1,2,3,4],
+        "Mugda": [1,2,3],
+        "Paltan": [1,2,3,4],
+        "Ramna": [1,2,3,4],
+        "Sabujbagh": [1,2,3],
+        "Shahbagh": [1,2,3],
+        "Shyampur": [1,2,3],
+        "Sutrapur": [1,2,3],
+        "Wari": [1,2,3],
 
-    // Belabo Unions
-    "Amlaba": [1,2,3,4,5,6,7,8,9],
-    "Bajnaba": [1,2,3,4,5,6,7,8,9],
-    "Belabo": [1,2,3,4,5,6,7,8,9],
-    "Binnabaid": [1,2,3,4,5,6,7,8,9],
-    "Char Uzilab": [1,2,3,4,5,6,7,8,9],
-    "Narayanpur": [1,2,3,4,5,6,7,8,9],
-    "Patuli": [1,2,3,4,5,6,7,8,9],
-    "Sallabad": [1,2,3,4,5,6,7,8,9]
-};
+        // Belabo Unions
+        "Amlaba": [1,2,3,4,5,6,7,8,9],
+        "Bajnaba": [1,2,3,4,5,6,7,8,9],
+        "Belabo": [1,2,3,4,5,6,7,8,9],
+        "Binnabaid": [1,2,3,4,5,6,7,8,9],
+        "Char Uzilab": [1,2,3,4,5,6,7,8,9],
+        "Narayanpur": [1,2,3,4,5,6,7,8,9],
+        "Patuli": [1,2,3,4,5,6,7,8,9],
+        "Sallabad": [1,2,3,4,5,6,7,8,9]
+    };
 
-const belaboUnions = ["Amlaba","Bajnaba","Belabo","Binnabaid","Char Uzilab","Narayanpur","Patuli","Sallabad"];
+        const belaboUnions = ["Amlaba","Bajnaba","Belabo","Binnabaid","Char Uzilab","Narayanpur","Patuli","Sallabad"];
 
-$('#district').change(function () {
-    const district = $(this).val();
-    const thanaSelect = $('#permanent_thana');
-    const wardSelect = $('#permanent_ward');
+        // Saved values from backend
+        const savedDistrict = "{{ isset($membership) ? $membership->permanent_district : '' }}";
+        const savedThana    = "{{ isset($membership) ? $membership->permanent_thana : '' }}";
+        const savedWard     = "{{ isset($membership) ? $membership->permanent_ward : '' }}";
 
-    thanaSelect.empty().append('<option value="">-- Select --</option>');
-    wardSelect.empty().append('<option value="">-- Select --</option>');
+        $('#district').change(function () {
+            const district = $(this).val();
+            const thanaSelect = $('#permanent_thana');
+            const wardSelect  = $('#permanent_ward');
 
-    if (district === 'Dhaka') {
-        const dhakaThanas = Object.keys(permanentWards).filter(k => !belaboUnions.includes(k));
-        dhakaThanas.forEach(t => {
-            thanaSelect.append('<option value="'+t+'">'+t+'</option>');
+            thanaSelect.empty().append('<option value="">-- Select --</option>');
+            wardSelect.empty().append('<option value="">-- Select --</option>');
+
+            let thanas = [];
+
+            if (district === 'Dhaka') {
+                thanas = Object.keys(permanentWards).filter(k => !belaboUnions.includes(k));
+            } else if (district === 'Belabo') {
+                thanas = belaboUnions;
+            }
+
+            // Populate thanas
+            thanas.forEach(t => {
+                const selected = (t === savedThana) ? 'selected' : '';
+                thanaSelect.append('<option value="'+t+'" '+selected+'>'+t+'</option>');
+            });
+
+            // If we have a saved thana, populate wards immediately
+            if (savedThana && permanentWards[savedThana]) {
+                permanentWards[savedThana].forEach(w => {
+                    const selected = (w == savedWard) ? 'selected' : '';
+                    wardSelect.append('<option value="'+w+'" '+selected+'>'+w+'</option>');
+                });
+            }
         });
-    } else if (district === 'Belabo') {
-        belaboUnions.forEach(u => {
-            thanaSelect.append('<option value="'+u+'">'+u+'</option>');
-        });
-    }
-});
 
+        // ✅ On page load, set district → thana → ward
+        $(document).ready(function(){
+            if (savedDistrict) {
+                $('#district').val(savedDistrict).trigger('change');
+            }
+        });
+        
 // ✅ Correct selector (permanent_thana instead of thana)
 $('#permanent_thana').change(function () {
     const thana = $(this).val();
@@ -789,15 +824,19 @@ $(document).ready(function(){
     }
     
 
-    $('input[name="payment"]').change(function(){
-        let type = $(this).val();
+    function updatePaymentFields() {
+        let type = $('input[name="payment_type"]:checked').val();
         let extraField = $("#payment-extra");
-        extraField.empty(); // clear previous content
+        extraField.empty();
 
         if(type === "Cash"){
             extraField.html(`
                 <label class="mb-1.5 block font-semibold required">Receiver Name</label>
-                <input type="text" name="receiver_name" class="w-full p-2 border border-gray-300 rounded" required placeholder="Enter Receiver Name"/>
+                <input type="text" name="payment_reciever" 
+                       class="w-full p-2 border border-gray-300 rounded" 
+                       required placeholder="Enter Receiver Name"
+                       value="{{ $hasMembership && $membership->payment_type == 'Cash' ? $membership->payment_reciever : '' }}"
+                       {{ $hasMembership ? 'disabled' : '' }}/>
             `);
         } 
         else if(type === "Bkash"){
@@ -805,10 +844,22 @@ $(document).ready(function(){
                 <label class="mb-1.5 block font-semibold required">Bkash Payment</label>
                 <div class="flex flex-col gap-2">
                     <span class="text-sm font-semibold text-green-700">Bkash Number: 017XXXXXXXX</span>
-                    <input type="text" name="transaction_id" class="w-full p-2 border border-gray-300 rounded" required placeholder="Enter Transaction ID"/>
+                    <input type="text" name="transaction_id" 
+                           class="w-full p-2 border border-gray-300 rounded" 
+                           required placeholder="Enter Transaction ID"
+                           value="{{ $hasMembership && $membership->payment_type == 'Bkash' ? $membership->transaction_id : '' }}"
+                           {{ $hasMembership ? 'disabled' : '' }}/>
                 </div>
             `);
         }
+    }
+
+    // Run once on load
+    updatePaymentFields();
+
+    // Run on change
+    $('input[name="payment_type"]').change(function(){
+        updatePaymentFields();
     });
 });
 

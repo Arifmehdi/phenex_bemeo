@@ -119,8 +119,9 @@ class MembershipController extends Controller
 
 public function store(Request $request, AppSettings $appSettings)
 {
+
     $validated = $request->validate([
-        'member_type' => 'nullable|numeric',
+        'member_type' => 'required|numeric',
         'subscription_fee' => 'nullable|integer|min:0',
         'new_fee' => 'nullable|integer|min:0',
         'life_member_fee' => 'nullable|integer|min:0',
@@ -131,42 +132,88 @@ public function store(Request $request, AppSettings $appSettings)
         'profession' => 'nullable|string|max:255',
         'profession_doc_type' => 'nullable|string|max:255',
         'present_address' => 'nullable|string|max:255',
+        'pre_thana' => 'nullable|string|max:255',
+        'pre_ward' => 'nullable|string|max:255',
         'permanent_address' => 'nullable|string|max:255',
-        'union_name' => 'nullable|string|max:255',
-        'ward' => 'nullable|string|max:255',
-        'guardian_type' => 'nullable|numeric',
+        'permanent_district' => 'nullable|string|max:255',
+        'permanent_thana' => 'nullable|string|max:255',
+        'permanent_ward' => 'nullable|string|max:255',
+        // 'union_name' => 'nullable|string|max:255',
+        'guardian_type' => 'nullable|numeric',  // g means gender
         'guardian_phone' => 'nullable|string|max:20',
-        'present_address_doc_type' => 'nullable|string|max:255',
+        'g_present_address_doc_type' => 'nullable|string|max:255',
         'gender' => 'nullable|in:Male,Female',
 
-        // File validations
+        'payment_type' => 'nullable|string|max:255',
+        'payment_reciever' => 'nullable|string|max:255',
+        'transaction_id' => 'nullable|string|max:255',
+        
+        // // File validations
         'profession_doc' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
-        'present_address_doc' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+        'g_present_address_doc' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
         'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
     ]);
-
+    // dd($request->all(), 'I love you ');
 
     try {
         $validated['user_id'] = Auth::id();
         $validated['is_active'] = false;
 
-        // if ($request->hasFile('profession_doc') && $request->file('profession_doc')->isValid()) {
-        //     $file = $request->file('profession_doc');
-        //     $filename = uniqid().'_'.$file->getClientOriginalName();
-        //     $validated['profession_doc'] = $file->storeAs('membership/documents', $filename, 'public');
-        // }
+        // Profession Document
+        if ($request->hasFile('profession_doc') && $request->file('profession_doc')->isValid()) {
+            $file = $request->file('profession_doc');
+            $filename = uniqid().'_'.time().'_'.$file->getClientOriginalName();
 
-        // if ($request->hasFile('present_address_doc') && $request->file('present_address_doc')->isValid()) {
-        //     $file = $request->file('present_address_doc');
-        //     $filename = uniqid().'_'.$file->getClientOriginalName();
-        //     $validated['present_address_doc'] = $file->storeAs('membership/documents', $filename, 'public');
-        // }
+            $destination = storage_path('app/public/membership/documents');
+            if (!file_exists($destination)) {
+                mkdir($destination, 0775, true);
+            }
 
-        // if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
-        //     $file = $request->file('photo');
-        //     $filename = uniqid().'_'.$file->getClientOriginalName();
-        //     $validated['photo'] = $file->storeAs('membership/photos', $filename, 'public');
-        // }
+            // Move the file manually
+            $file->move($destination, $filename);
+
+            // Save relative path for DB
+            $validated['profession_doc'] = 'membership/documents/'.$filename;
+        }
+
+        // Present Address Document
+        if ($request->hasFile('present_address_doc') && $request->file('present_address_doc')->isValid()) {
+            $file = $request->file('present_address_doc');
+            $filename = uniqid().'_'.time().'_'.$file->getClientOriginalName();
+
+            $destination = storage_path('app/public/membership/documents');
+            if (!file_exists($destination)) {
+                mkdir($destination, 0775, true);
+            }
+
+            // Move the file manually
+            $file->move($destination, $filename);
+
+            // Save relative path for DB
+            $validated['present_address_doc'] = 'membership/documents/'.$filename;
+        }
+
+        if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
+            $file = $request->file('photo');
+
+            $extension = $file->getClientOriginalExtension();
+            $filename  = uniqid().'_'.time().'.'.$extension;
+
+            // Define target folder
+            $destination = storage_path('app/public/membership/photos');
+
+            // Create folder if not exists
+            if (!file_exists($destination)) {
+                mkdir($destination, 0775, true);
+            }
+
+            // Move file
+            $file->move($destination, $filename);
+
+            // Save path for DB
+            $validated['photo'] = 'membership/photos/'.$filename;
+        }
+
         Membership::create($validated);
 
         return redirect()->back()->with('success', 'Membership submitted successfully!');

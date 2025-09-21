@@ -22,7 +22,7 @@
                         {{ __('Membership') }}
                     </x-nav-link>--}}
                     <x-nav-link :href="route('new.membership.create')" :active="request()->routeIs('new.membership.create')">
-                        {{ __('New Membership') }}
+                        {{ __('Membership') }}
                     </x-nav-link>
                     @if (Auth::user()->membership()->exists())
                         @if (Auth::user()->membership->membership_expire_date < now())

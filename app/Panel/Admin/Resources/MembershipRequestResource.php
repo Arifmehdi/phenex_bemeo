@@ -79,7 +79,14 @@ class MembershipRequestResource extends Resource
                 // Personal Information Section
                 Forms\Components\Section::make('Personal Information')
                     ->schema([
-                        Forms\Components\TextInput::make('membership_id')
+                        Forms\Components\Radio::make('member_type') // form field name
+                            ->label('Membership Type')
+                            ->options([
+                                1 => 'General Member',
+                                2 => 'Existing Member',
+                            ])
+                            ->default(fn ($record) => $record?->member_type) // preselect existing value
+                            ->columnSpanFull()
                             ->required(),
 
                         Forms\Components\TextInput::make('full_name')
@@ -97,8 +104,11 @@ class MembershipRequestResource extends Resource
 
                         Forms\Components\Select::make('profession')
                             ->options([
-                                'Doctor' => 'Doctor',
-                                'Business Man' => 'Business Man',
+                                'Agriculture' => 'Agriculture',
+                                'Govt. Service Holder' => 'Govt. Service Holder',
+                                'Business' => 'Business',
+                                'Private Service Holder' => 'Private Service Holder',
+                                'Housewife' => 'Housewife',
                                 'Student' => 'Student',
                                 'Other' => 'Other',
                             ])
@@ -106,15 +116,15 @@ class MembershipRequestResource extends Resource
 
                         Forms\Components\Select::make('profession_doc_type')
                             ->options([
-                                'Certificate' => 'Certificate',
-                                'Tin Certificate' => 'Tin Certificate',
-                                'NID' => 'NID',
+                                'Visiting card' => 'Visiting card',
+                                'Trade License' => 'Trade License',
+                                'Student ID card' => 'Student ID card',
                                 'Other' => 'Other',
                             ])
                             ->required(),
 
                         Forms\Components\FileUpload::make('profession_doc')
-                            ->label('Upoload Document')
+                            ->label('Upoloaded Document')
                             ->directory('membership/documents'),
                             // ->multiple()
                             // ->minFiles(3)
@@ -122,47 +132,109 @@ class MembershipRequestResource extends Resource
 
                         Forms\Components\TextInput::make('present_address')
                             ->required()
+                            ->columnSpanFull()
                             ->maxLength(255),
                             
+                        Forms\Components\Select::make('pre_thana')
+                            ->label('Thana')
+                            ->options([
+                                'Bhashantek' => 'Bhashantek',
+                                'Bhatara' => 'Bhatara',
+                                'Cantonment' => 'Cantonment',
+                                'Darus Salam' => 'Darus Salam',
+                                'Gulshan' => 'Gulshan',
+                                'Kafrul' => 'Kafrul',
+                                'Khilkhet' => 'Khilkhet',
+                                'Mirpur' => 'Mirpur',
+                                'Pallabi' => 'Pallabi',
+                                'Tejgaon' => 'Tejgaon',
+                                'Tejgaon Industrial Area' => 'Tejgaon Industrial Area',
+                                'Uttara East' => 'Uttara East',
+                                'Uttara West' => 'Uttara West',
+                                'Bangshal' => 'Bangshal',
+                                'Chawkbazar' => 'Chawkbazar',
+                                'Demra' => 'Demra',
+                                'Gandaria' => 'Gandaria',
+                                'Hazaribagh' => 'Hazaribagh',
+                                'Jatrabari' => 'Jatrabari',
+                                'Kadamtali' => 'Kadamtali',
+                                'Kamrangirchar' => 'Kamrangirchar',
+                                'Kotwali' => 'Kotwali',
+                                'Lalbagh' => 'Lalbagh',
+                                'Motijheel' => 'Motijheel',
+                                'Mugda' => 'Mugda',
+                                'Paltan' => 'Paltan',
+                                'Ramna' => 'Ramna',
+                                'Sabujbagh' => 'Sabujbagh',
+                                'Shahbagh' => 'Shahbagh',
+                                'Shyampur' => 'Shyampur',
+                                'Sutrapur' => 'Sutrapur',
+                                'Wari' => 'Wari',
+                            ])
+                            ->required(),
                         // Forms\Components\TextInput::make('present_address')
                         //     ->tel()
                         //     ->maxLength(20)
                         //     ->nullable(),
 
 
-
-                        Forms\Components\Select::make('permanent_address')
-                            ->options([
-                                'Dhaka' => 'Dhaka',
-                                'Khulna' => 'Khulna',
-                                'Chattogram' => 'Chattogram',
-                                'Other' => 'Other',
-                            ])
-                            ->required(),
-
-                        Forms\Components\Select::make('union_name')
-                            ->options([
-                                'Adhara' => 'Adhara',
-                                'Hathajari' => 'Hathajari',
-                                'Miradabad' => 'Miradabad',
-                                'Other' => 'Other',
-                            ])
-                            ->required(),
-
-                        Forms\Components\Select::make('ward')
+                        Forms\Components\Select::make('pre_ward')
+                            ->label('Ward Number')
                             ->options([
                                 '1' => '1',
                                 '2' => '2',
                                 '3' => '3',
-                                'Other' => 'Other',
+                                '4' => '4',
+                                '5' => '5',
+                                '6' => '6',
+                                '7' => '7',
+                                '8' => '8',
+                                '9' => '9',
                             ])
                             ->required(),
+                        Forms\Components\TextInput::make('permanent_address')
+                            ->label('Parmanenet Address')
+                            ->columnSpanFull()
+                            ->required(),
 
-                        Forms\Components\Select::make('gender')
+                        Forms\Components\Grid::make(3) // 3 equal columns
+                            ->schema([
+                                Forms\Components\Select::make('permanent_district')
+                                    ->label('District (Permanent)')
+                                    ->options([
+                                        'Dhaka' => 'Dhaka',
+                                        'Belabo' => 'Belabo',
+                                    ])
+                                    ->required(),
+
+                                Forms\Components\Select::make('permanent_thana')
+                                    ->label('Thana (Permanent)')
+                                    ->options([
+                                        'Adhara' => 'Adhara',
+                                        'Hathajari' => 'Hathajari',
+                                        'Miradabad' => 'Miradabad',
+                                        'Other' => 'Other',
+                                    ])
+                                    ->required(),
+
+                                Forms\Components\Select::make('permanent_ward')
+                                    ->label('Ward (Permanent)')
+                                    ->options([
+                                        '1' => '1',
+                                        '2' => '2',
+                                        '3' => '3',
+                                        'Other' => 'Other',
+                                    ])
+                                    ->required(),
+                        ]),
+
+                        Forms\Components\Radio::make('guardian_type') // form field name
+                            ->label('Guardian Type')
                             ->options([
-                                'Male' => 'Male',
-                                'Female' => 'Female',
+                                '1' => 'Husband',
+                                '2' => 'Father',
                             ])
+                            ->default(fn ($record) => $record?->guardian_type) // preselect existing value
                             ->required(),
 
                         Forms\Components\TextInput::make('guardian_phone')
@@ -170,11 +242,53 @@ class MembershipRequestResource extends Resource
                             ->required()
                             ->maxLength(20),
 
-                        Forms\Components\TextInput::make('email')
-                            ->email()
-                            // ->required()
-                            ->maxLength(255),
+                        Forms\Components\Select::make('g_present_address_doc_type') // form field name
+                            ->label('Guardian Present Address Verification')
+                            ->options([
+                                'Electric Bill' => 'Electric Bill',
+                                'Water bill' => 'Water bill',
+                                'House rent slip' => 'House rent slip',
+                                'Others' => 'Others',
+                            ])
+                            ->default(fn ($record) => $record?->guardian_type) // preselect existing value
+                            ->required(),
 
+                        Forms\Components\FileUpload::make('g_present_address_doc')
+                            ->label('Present Address Upoloaded Document')
+                            ->directory('membership/documents'),
+
+
+                        Forms\Components\Radio::make('gender') // form field name
+                            ->label('Membership Type')
+                            ->options([
+                                'Male' => 'Male',
+                                'Female' => 'Female',
+                            ])
+                            ->default(fn ($record) => $record?->member_type) // preselect existing value
+                            ->required(),
+
+                        Forms\Components\FileUpload::make('photo')
+                            ->label('Upoloaded Photo')
+                            ->directory('membership/photos'),
+
+                        Forms\Components\Radio::make('payment_type') 
+                            ->label('Payment Type')
+                            ->options([
+                                'Cash' => 'Cash',
+                                'Bkash' => 'Bkash',
+                            ])
+                            ->default(fn ($record) => $record?->payment_type) // preselect existing value
+                            ->required(),
+
+                        Forms\Components\TextInput::make('transaction_id')
+                            ->label('Bkash Transaction ID')
+                            ->maxLength(255)
+                            ->visible(fn (\Filament\Forms\Get $get) => $get('payment_type') === 'Bkash'), // only show if Bkash
+
+                        Forms\Components\TextInput::make('payment_reciever')
+                            ->label('Payment Receiver')
+                            ->maxLength(255)
+                            ->visible(fn (\Filament\Forms\Get $get) => $get('payment_type') === 'Cash'), // only show if Cash
 
 
                         // Forms\Components\TextInput::make('membership_fee')
